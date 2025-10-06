@@ -1,0 +1,7 @@
+# Bot tokens and sensitive data
+.env
+config.py
+token.txt
+*.env
+__pycache__/
+*.pyc
