@@ -8,7 +8,7 @@ intents.messages = True
 bot = discord.Client(intents=intents)
 
 TARGET_USERNAMES = ["juba.x", "Nutonッ"]
-COOLDOWN = 60
+COOLDOWN = 3
 last_response_time = {}
 
 @bot.event
