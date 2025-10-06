@@ -7,7 +7,7 @@ intents.messages = True
 
 bot = discord.Client(intents=intents)
 
-TARGET_USERNAMES = ["juba.x", "nutonx","ibra6710","alnasra"]
+TARGET_USERNAMES = ["juba.x", "nutonx","ibra6710","kooka_n"]
 COOLDOWN = 3
 last_response_time = {}
 
