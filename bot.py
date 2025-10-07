@@ -42,7 +42,7 @@ async def handle_auto_response(message):
             return False
         
         # Send response
-        await message.channel.send(f"Fuck off {message.author.name}")
+        await message.channel.send(f"Fuck off {message.author.name} ya gay lol rekt ez")
         last_response_time[message.author.name] = current_time
         print(f"🤖 Auto-response to {message.author.name}")
         return True
