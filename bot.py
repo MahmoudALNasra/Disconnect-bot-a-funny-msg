@@ -28,7 +28,7 @@ async def on_message(message):
         if current_time - last_time < COOLDOWN:
             return
         
-        await message.channel.send(f"Fuck off {message.author.name}")
+        await message.channel.send(f"Fuck off {message.author.name} ya Gay lol rekt")
         last_response_time[message.author.name] = current_time
         print(f"📨 Responded to {message.author.name}")
 
