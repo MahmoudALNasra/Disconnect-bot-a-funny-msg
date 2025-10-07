@@ -11,7 +11,7 @@ intents.voice_states = True  # Required for voice channel tracking
 bot = discord.Client(intents=intents)
 
 # ===== CONFIGURATION =====
-TARGET_USERNAMES = ["juba.x", "nutonx", "ibra6710", "kooka_n"]
+TARGET_USERNAMES = ["juba.x", "nutonx", "kooka_n"]
 TEXT_COOLDOWN = 3  # seconds for text responses
 VOICE_DISCONNECT_MINUTES = 10  # minutes before disconnecting from voice
 # =========================
