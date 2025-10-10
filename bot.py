@@ -2,6 +2,7 @@ import discord
 import os
 import asyncio
 from datetime import datetime
+import random
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -11,7 +12,7 @@ intents.voice_states = True  # Required for voice channel tracking
 bot = discord.Client(intents=intents)
 
 # ===== CONFIGURATION =====
-TARGET_USERNAMES = ["nutonx","kooka_n"]
+TARGET_USERNAMES = ["nutonx", "kooka_n"]
 TEXT_COOLDOWN = 3  # seconds for text responses
 VOICE_DISCONNECT_MINUTES = 9999990  # minutes before disconnecting from voice
 # =========================
@@ -19,6 +20,30 @@ VOICE_DISCONNECT_MINUTES = 9999990  # minutes before disconnecting from voice
 # Storage for bot functionality
 last_response_time = {}
 voice_check_tasks = {}  # Track active voice disconnect timers
+
+# Message rotation lists
+FUCK_OFF_MESSAGES = [
+    "Fuck off {username} ya gay lol rekt ez",
+    "Get lost {username} you absolute clown 🤡  ya gay lol rekt ez",
+    "Nobody wants you here {username} 😘  ya gay lol rekt ez",
+    "Go touch some grass {username} 🌿  ya gay lol rekt ez",
+    "Skill issue {username} 💀  ya gay lol rekt ez",
+    "Cry about it {username} 😭 ya gay lol rekt ez",
+    "Mad cuz bad {username} 🎮 ya gay lol rekt ez",
+    "Take the L {username} 👋 ya gay lol rekt ez",
+    "You're cringe {username} 💩 ya gay lol rekt ez",
+    "Get good {username} 🥱 ya gay lol rekt ez",
+    "Ratio + L + Bozo {username} 📉 ya gay lol rekt ez",
+    "Your opinion is invalid {username} ❌ ya gay lol rekt ez",
+    "Cope harder {username} 🧂 ya gay lol rekt ez",
+    "Seethe {username} 😤 ya gay lol rekt ez",
+    "Mald {username} 🌋 ya gay lol rekt ez",
+    "Stay mad {username} 😠 ya gay lol rekt ez",
+    "You fell off {username} 📉 ya gay lol rekt ez",
+    "Fatherless behavior {username} 👨‍👦 ya gay lol rekt ez",
+    "Go back to minecraft {username} ⛏️ ya gay lol rekt ez",
+    "Discord mod energy {username} 🍕 ya gay lol rekt ez"
+]
 
 @bot.event
 async def on_ready():
@@ -28,6 +53,7 @@ async def on_ready():
     print(f'🔧 Features: Auto-Response + Voice Auto-Disconnect')
     print(f'🎯 Target users: {TARGET_USERNAMES}')
     print(f'⏱️ Voice disconnect after: {VOICE_DISCONNECT_MINUTES} minutes')
+    print(f'💬 Message pool: {len(FUCK_OFF_MESSAGES)} variations')
     print('=' * 50)
 
 # ===== AUTO-RESPONSE FUNCTIONALITY =====
@@ -41,10 +67,14 @@ async def handle_auto_response(message):
         if current_time - last_time < TEXT_COOLDOWN:
             return False
         
+        # Get random message from rotation
+        random_message = random.choice(FUCK_OFF_MESSAGES)
+        formatted_message = random_message.format(username=message.author.name)
+        
         # Send response
-        await message.channel.send(f"Fuck off {message.author.name} ya gay lol rekt ez")
+        await message.channel.send(formatted_message)
         last_response_time[message.author.name] = current_time
-        print(f"🤖 Auto-response to {message.author.name}")
+        print(f"🤖 Auto-response to {message.author.name}: {formatted_message}")
         return True
     return False
 
@@ -118,6 +148,26 @@ async def handle_utility_commands(message):
         active_count = len(voice_check_tasks)
         await message.channel.send(f"🎧 Tracking {active_count} user(s) in voice channels")
         return True
+    
+    elif message.content.startswith('!messages'):
+        # Show available messages
+        message_count = len(FUCK_OFF_MESSAGES)
+        sample_messages = random.sample(FUCK_OFF_MESSAGES, min(5, message_count))
+        sample_text = "\n".join([msg.format(username="USER") for msg in sample_messages])
+        await message.channel.send(f"💬 **Message Pool** ({message_count} total)\nSample:\n{sample_text}")
+        return True
+    
+    elif message.content.startswith('!addmessage'):
+        # Allow adding new messages via command
+        if message.author.guild_permissions.administrator:
+            new_msg = message.content.replace('!addmessage ', '').strip()
+            if new_msg and "{username}" in new_msg:
+                FUCK_OFF_MESSAGES.append(new_msg)
+                await message.channel.send(f"✅ Added new message: `{new_msg}`")
+                print(f"📝 New message added by {message.author.name}: {new_msg}")
+            else:
+                await message.channel.send("❌ Message must contain `{username}` placeholder")
+            return True
     
     return False
 
